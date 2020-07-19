@@ -1,0 +1,502 @@
+<% include partials/header.ejs %>
+</head>
+<body>
+
+<div class="wrapper">
+	<div class="sidebar" data-background-color="white" data-active-color="danger">
+
+    <!--
+		Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+		Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+	-->
+	<div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="/dashboard" class="simple-text">
+                    Node EJS
+                </a>
+            </div>
+
+            <ul class="nav">
+                <li>
+                    <a href="/dashboard">
+                        <i class="ti-panel"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/profile">
+                        <i class="ti-user"></i>
+                        <p>User Profile</p>
+                    </a>
+                </li>
+                 
+                <li class="active">
+                    <a href="/tasks">
+                        <i class="ti-text"></i>
+                        <p>Events</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/logout">
+                        <i class="ti-view-list-alt"></i>
+                        <p>Logout</p>
+                    </a>
+                </li>
+               <!-- <li>
+                    <a href="icons.html">
+                        <i class="ti-pencil-alt2"></i>
+                        <p>Icons</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="maps.html">
+                        <i class="ti-map"></i>
+                        <p>Maps</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="notifications.html">
+                        <i class="ti-bell"></i>
+                        <p>Notifications</p>
+                    </a>
+                </li> -->
+				
+            </ul>
+    	</div>
+    	
+    </div>
+
+    <div class="main-panel">
+		
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4 col-md-5">
+                        <div class="card card-user">
+                            <div class="image">
+                                <img src="./img/background.jpg" alt="..."/>
+                            </div>
+                            <div class="content">
+                                <div class="author">
+                                  <% if(profile_pic){%>
+                                  <img class="avatar border-white" src="./img/faces/<%= profile_pic %>" alt="..."/>
+                                 
+                                <% }
+                                else{ %>
+                                 <img class="avatar border-white" src="./img/faces/face-1.jpg %>" alt="..."/>
+                                 <% } %>
+                                  <h4 class="title"><%= firstname %> <%= lastname %><br />
+                                     <a href="#"><small>@<%= role %></small></a>
+                                  </h4>
+                                </div>
+                                <p class="description text-center">
+                                   
+                                </p>
+                            </div>
+                            <hr>
+                           
+                        </div>
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Spouse Details</h4>
+                            </div>
+                            <div class="content">
+                               <!--  <ul class="list-unstyled team-members">
+                                            <li> -->
+                                <div class="row">
+                                     <div class="col-xs-3">
+                                     <% if(spouse_details){ %>
+                                        <div class="avatar profile_pic">
+                                        <% if(spouse_details.profile_pic){ %>
+                                            <img src="./img/faces/<%= spouse_details.profile_pic %>" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                          <% }
+                                          else{ %>
+                                                 <img src="./img/faces/face-1.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                            <% } %>
+                                         </div>
+                                        <% }
+                                        else{ %>
+                                          <div class="avatar">
+                                            <img src="./img/faces/face-1.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                        </div>
+                                         <% } %>
+                                        
+                                    </div>
+                                     <% if(spouse_details){ %>
+                                    <div class="col-xs-6">
+                                       
+                                       <%= spouse_details.firstname %> <%= spouse_details.lastname%>
+                                        <br />
+                                        <span class="text-muted"><small><%= spouse_details.role %></small></span>
+                                    </div>
+
+                                    <div class="col-xs-3 text-right">
+                                        <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-envelope"></i></btn>
+                                    </div>
+                                     <% } 
+                                     else{ %>
+                                     <p>
+                                        <a href="../spouse_register">Make a registration for your spouse</a>
+                                     </p>
+                                     <% } %>                                          
+                                    
+
+                                    
+                                </div>
+                                           <!--  </li>
+                                           
+                                        </ul> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-7">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Today's Events</h4>
+                            </div>
+                            <div class="content">
+                            <% if(viewer_tasks.length > 0){ %>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Start Time</th>
+                                        <th>End Time</th>
+                                        
+                                    </thead>
+                                    
+                                    <tbody>
+                                     <% for (var i =0; i< viewer_tasks.length; i++){ %>
+                                        <tr>
+                                            <td><%= i+1 %></td>
+                                            <td><%= viewer_tasks[i].event_name %></td>
+                                            <td><%= viewer_tasks[i].event_description %></td>
+                                            <td><%= viewer_tasks[i].start_time %></td>
+                                            <td><%= viewer_tasks[i].end_time %></td>
+                                            <% if(viewer_tasks[i].task_status == 0){ %> 
+                                                <td><button type="button" class="btn btn-success" data-id="<%= viewer_tasks[i]._id %>">Start</button></td> 
+                                                <td><button type="button" class="btn btn-success end" data-id="<%= viewer_tasks[i]._id %>" disabled>Completed</button></td>
+                                            <% }     
+                                             if(viewer_tasks[i].task_status == 1){ %> 
+                                                <td><button type="button" class="btn btn-success" data-id="<%= viewer_tasks[i]._id %>" disabled>Start</button></td>
+                                                <td><button type="button" class="btn btn-success end" data-id="<%= viewer_tasks[i]._id %>">Completed</button></td>
+
+                                            <% } 
+                                             if(viewer_tasks[i].task_status == 2){ %> 
+                                              <td><button type="button" class="btn btn-success" data-id="<%= viewer_tasks[i]._id %>" disabled>Start</button></td> 
+                                              <td><button type="button" class="btn btn-success end" data-id="<%= viewer_tasks[i]._id %>" disabled>Completed</button></td>
+                                            <% } %>
+                                        </tr>
+                                      <% } %>  
+                                    </tbody>
+                                </table>
+                            <% } 
+                              else{ %>
+                                <div>
+                                    <span class="task_notification">No tasks available</span>
+                                </div>
+                            <% } %>
+
+                            </div>
+                        </div>
+                    </div>
+             </div>
+            
+            <% if(spouse_details) { %>
+            <div class="col-md-4">
+                        <div class="card">
+                            <div class="header">
+                                 <h4 class="title">Schedule Events</h4>
+                                <p class="category">Schedule events for spouse</p>
+                            </div>
+                            <div class="content">
+                            <% if(event_schedule_message){ %>
+                                <p class="success_message"><%= event_schedule_message %></p>
+                            <% } %>
+            
+                             <form action="/schedule_events" method="post">
+                                     <div class="row">
+                                       <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Spouse ID</label>
+                                                <input type="hidden" class="form-control border-input" name="viewer_id" value="<%= spouse_details._id %>">
+                                                <input type="text" class="form-control border-input" disabled value="<%= spouse_details._id %>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Event Name</label>
+                                                <input type="text" class="form-control border-input" placeholder="Event Name" name="event_name" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Event Description</label>
+                                                <textarea rows="5" class="form-control border-input" placeholder="Here can be your event description" name="event_description"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="checkbox" name="for_date_event" id="date_event" value="DateEvent">Schedule Event As Per Date
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Start Time</label>
+                                                 <input type="time" class="form-control border-input" name="start_time">
+                                                 <select name="start" class="form-control border-input">
+                                                     <option value="AM">AM</option>
+                                                     <option value="PM">PM</option>
+                                                 </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>End Time</label>
+                                                <input type="time" class="form-control border-input" name="end_time">
+                                                 <select name="end" class="form-control border-input">
+                                                     <option value="AM">AM</option>
+                                                     <option value="PM">PM</option>
+                                                 </select>
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                     <div class="row" id="week">
+                                        <div class="col-md-12">
+                                            <div class="">
+                                                <label>Repeat:</label><br>
+                                                 Mon <input type="Checkbox" name="event_check" value="Monday">
+                                                 Tue <input type="Checkbox" name="event_check" value="Tuesday">
+                                                 Wed <input type="Checkbox" name="event_check"
+                                                 value="Wednesday">
+                                                 Thu <input type="Checkbox" name="event_check" value="Thursday">
+                                                 Fri <input type="Checkbox" name="event_check" value="Friday">
+                                                 Sat <input type="Checkbox" name="event_check"
+                                                 value="Saturday">
+                                                 Sun <input type="Checkbox" name="event_check" value="Sunday">
+                                            </div>
+                                        </div>
+                                    </div>
+                                  
+                                    <div id="as_per_date">
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <div class="form-group">
+                                                    <label>Start Date</label>
+                                                     <input type="date" class="form-control border-input" name="start_date">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="form-group">
+                                                    <label>End Date</label>
+                                                    <input type="date" class="form-control border-input" name="end_date">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                    <button type="submit" class="btn btn-info btn-fill btn-wd"> Schedule Event</button>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </form> 
+                                  
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="header">
+                                 <h4 class="title">Scheduled Events</h4>
+                                <p class="category">Scheduled events for spouse</p>
+                                <p>
+                                    <label>Event Status</label>
+                                    <i class="fa fa-circle text-danger"></i> Not Started
+                                    <i class="fa fa-circle text-warning"></i> Started
+                                    <i class="fa fa-circle text-info"></i> Completed
+                                </p>
+                            </div>
+                            <div class="content">
+                                <% if(scheduled_tasks.length > 0){ %>
+                             <table class="table table-striped">
+                                <thead>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    
+                                </thead>
+                                <tbody>
+                                 <% for (var i =0; i< scheduled_tasks.length; i++){ %>
+                                <tr>
+                                    <td><%= i+1 %></td>
+                                    <td><%= scheduled_tasks[i].event_name %></td>
+                                    <td><%= scheduled_tasks[i].event_description %></td>
+                                    <td><%= scheduled_tasks[i].start_time %></td>
+                                    <td><%= scheduled_tasks[i].end_time %></td>
+                                    <% if(scheduled_tasks[i].task_status == 0){ %> 
+                                    <td><i class="fa fa-circle text-danger"></i></td>
+                                    <td><button class="btn btn-success del" data-id="<%= scheduled_tasks[i]._id %>">Delete</button></td>
+                                    <% } 
+                                     if(scheduled_tasks[i].task_status == 1){ %> 
+                                        <td><i class="fa fa-circle text-warning"></i></td>
+                                    <% } 
+                                    else if(scheduled_tasks[i].task_status == 2){ %> 
+                                         <td><i class="fa fa-circle text-info"></td>
+                                         <td><button class="btn btn-success">Ratings</button></td>
+                                    <% } %>        
+                                    
+                                </tr>
+                               <% } %>
+                            </tbody>
+                        </table>
+                        <% } 
+                          else{ %>
+                            <div>
+                                <span class="task_notification">No tasks scheduled</span>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div> 
+            <% } %>
+     </div>
+</div>
+
+
+        <footer class="footer">
+           <!--  <div class="container-fluid">
+                <nav class="pull-left">
+                    <ul>
+
+                        <li>
+                            <a href="http://www.creative-tim.com">
+                                Creative Tim
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://blog.creative-tim.com">
+                               Blog
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.creative-tim.com/license">
+                                Licenses
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+				<div class="copyright pull-right">
+                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
+                </div>
+            </div> -->
+        </footer>
+
+    </div>
+</div>
+
+
+</body>
+     <script
+      src="http://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function(){
+            //Start
+            $("button[type='button']").click(function(){
+                var data_id = $(this).data('id');
+                $.post('/task_status/',{event_id:data_id},function(start_result){
+                    console.log(start_result);
+                    if(start_result)
+                    {
+                        location.reload();
+                    }
+                });
+            });
+
+            //End
+             $('.end').click(function(){
+                var comp_id = $(this).data('id');
+                console.log(comp_id);
+                $.post('/taskend_status/',{event_id:comp_id},function(end_result){
+                    console.log(end_result);
+                    if(end_result)
+                    {
+                        location.reload();
+                    }
+                });
+            });
+
+             //Delete
+            $('.del').click(function(){
+                var data_id = $(this).data('id');
+                console.log(data_id);
+               $.post('/task_delete/',{event_id:data_id},function(del_result){
+                    console.log(del_result);
+                    if(del_result )
+                    {
+                        location.reload();
+                    }
+               });
+            });
+
+           $("span").removeClass("first-icon fa fa-square fa-base");
+           $("span").removeClass("second-icon fa fa-check-square fa-base");
+
+           $('#as_per_date').hide();
+           $('#date_event').click(function(){
+               $('#as_per_date').slideToggle();
+               $('#week').slideToggle();
+            });    
+       });
+
+    </script>
+
+    <!--   Core JS Files   -->
+    <script src="./js/jquery-1.10.2.js" type="text/javascript"></script>
+	<script src="./js/bootstrap.min.js" type="text/javascript"></script>
+
+	<!--  Checkbox, Radio & Switch Plugins -->
+	<script src="./js/bootstrap-checkbox-radio.js"></script>
+
+	<!--  Charts Plugin -->
+	<script src="./js/chartist.min.js"></script>
+
+    <!--  Notifications Plugin    -->
+    <script src="./js/bootstrap-notify.js"></script>
+
+    <!--  Google Maps Plugin    -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+
+    <!-- Paper Dashboard Core javascript and methods for Demo purpose -->
+	<script src="./js/paper-dashboard.js"></script>
+
+	<!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+	<script src="./js/demo.js"></script>
+
+  <!--   <script type="text/javascript">
+        $(document).ready(function(){
+
+           // demo.initChartist();
+
+           var msg = $('#Event_notification').val(); 
+           alert(msg);
+            $.notify({
+                icon: 'ti-gift',
+                message: "Success- "+msg, 
+
+            },{
+                type: 'success',
+                timer: 4000
+            });
+
+        });
+    </script> -->
+
+</html>

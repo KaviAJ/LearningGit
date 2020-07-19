@@ -1,0 +1,22 @@
+.profile_pic {
+    width: 200px;
+    height: 200px;
+}
+/*Success Notify*/
+.success_message {
+    color: #3091B2;
+    padding: 10px;
+}
+.task_notification{
+	color: #3091B2;
+    padding: 10px;
+}
+.register_success{
+	color: #3091B2;
+    padding: 10px;
+}
+
+
+/* Failure Notify */
+
+
